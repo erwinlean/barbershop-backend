@@ -7,12 +7,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const db = require ("./config/db");
 const cors = require ("cors");
-const corstData = require("./config/corsData.json")
+const corstData = require("./config/corsData.json");
+const bodyParser = require('body-parser'); // to check
+const rateLimitMiddleware = require('./rateLimitMiddleware'); // to check
 
 // Path routes
 var indexRouter = require('./routes/index');
 var pricesRouter = require('./routes/prices');
-var pricesRouter = require('./routes/users');
+var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -20,8 +22,10 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Middleware de sanitizer
+// Middlewares
 app.use(sanitizer());
+app.use(rateLimitMiddleware); // to check
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -43,7 +47,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', indexRouter);
 app.use('/prices', pricesRouter);
-app.use('/users', users);
+app.use('/users', usersRouter);
 
 // Cors
 const corsOptions = {
