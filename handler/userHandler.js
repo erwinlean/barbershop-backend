@@ -3,6 +3,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { sanitize } = require('express-sanitizer');
 
 function createToken(user) {
     return jwt.sign({ id: user.id }, 'secretKey'/*, { expiresIn: 86400 }*/);
@@ -12,7 +13,7 @@ module.exports = {
     login: async function (req, res) {
         try {
             const { nombre, password } = req.body;
-            const user = await User.findOne({ nombre });
+            const user = await User.findOne({ nombre: req.sanitize(nombre) });
             if (!user) {
                 return res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos' });
             }
@@ -31,12 +32,12 @@ module.exports = {
         try {
             const { nombre, password } = req.body;
 
-            const existingUser = await User.findOne({ nombre });
+            const existingUser = await User.findOne({ nombre: req.sanitize(nombre) });
             if (existingUser) {
                 return res.status(400).json({ message: 'Este nombre de usuario ya está en uso' });
             };
 
-            const user = new User({ nombre, password });
+            const user = new User({ nombre: req.sanitize(nombre), password: req.sanitize(password) });
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
             await user.save();

@@ -1,6 +1,7 @@
 "use strict";
 
 const Prices = require('../schema/pricesSchema');
+const { sanitize } = require('express-sanitizer');
 
 module.exports = {
     getAllPrices : async function(req, res) {
@@ -13,7 +14,7 @@ module.exports = {
     },
     createPrice : async function (req, res) {
         try {
-            const newPrice = new Prices(req.body);
+            const newPrice = new Prices(req.sanitize(req.body));
             const savedPrice = await newPrice.save();
             res.status(201).json(savedPrice);
         } catch (error) {
@@ -32,7 +33,7 @@ module.exports = {
 
             const updatedPrice = await Prices.findOneAndUpdate(
                 { _id: req.params.id },
-                priceFieldsToUpdate,
+                req.sanitize(priceFieldsToUpdate),
                 { new: true }
             );
             res.status(200).json(updatedPrice);

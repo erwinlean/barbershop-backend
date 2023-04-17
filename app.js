@@ -16,6 +16,13 @@ var pricesRouter = require('./routes/users');
 
 var app = express();
 
+// Middleware de body-parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Middleware de sanitizer
+app.use(sanitizer());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
