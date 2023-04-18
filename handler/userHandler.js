@@ -10,6 +10,13 @@ function createToken(user) {
 };
 
 module.exports = {
+    getUsers: async function (req, res){
+        try {
+            res.status(417).json({ message: "Error, users cant be access by HTTP" });
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        };
+    },
     login: async function (req, res) {
         try {
             const { nombre, password } = req.body;
