@@ -15,6 +15,7 @@ const rateLimitMiddleware = require('./rateLimitMiddleware'); // to check
 var indexRouter = require('./routes/index');
 var pricesRouter = require('./routes/prices');
 var usersRouter = require('./routes/users');
+var profitsRouter = require("./routes/profits");
 
 var app = express();
 
@@ -48,6 +49,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/prices', pricesRouter);
 app.use('/users', usersRouter);
+app.use('/profits', profitsRouter);
 
 // Cors
 const corsOptions = {
