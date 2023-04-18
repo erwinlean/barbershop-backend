@@ -6,6 +6,7 @@ const profits = require("../handler/profitsHandler");
 const requireToken = require ("../middleware/reqToken");
 const { sanitize } = require('express-sanitizer');
 
-router.get('/', sanitize(), requireToken, profits.getAllProfits);
+router.get('/', requireToken, profits.getAllProfits);
+router.put('/', requireToken, profits.updateProfits);
 
 module.exports = router;
