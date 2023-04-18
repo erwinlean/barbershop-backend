@@ -1,6 +1,6 @@
 "use strict";
 
-const User = require('../models/user');
+const User = require('../schema/userSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sanitize } = require('express-sanitizer');
@@ -28,7 +28,7 @@ module.exports = {
             return res.status(500).json({ message: 'Error en el servidor' });
         }
     },
-    createUser: async function (req, res) {
+    createUser: async function createUser (req, res) {
         try {
             const { nombre, password } = req.body;
 

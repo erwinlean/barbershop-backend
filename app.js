@@ -8,8 +8,8 @@ var logger = require('morgan');
 const db = require ("./config/db");
 const cors = require ("cors");
 const corstData = require("./config/corsData.json");
-const bodyParser = require('body-parser'); // to check
-const rateLimitMiddleware = require('./rateLimitMiddleware'); // to check
+const bodyParser = require('body-parser');
+//const { sanitize } = require('express-sanitizer');
 
 // Path routes
 var indexRouter = require('./routes/index');
@@ -24,8 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Middlewares
-app.use(sanitizer());
-app.use(rateLimitMiddleware); // to check
+//app.use(sanitize());
 
 
 // view engine setup
