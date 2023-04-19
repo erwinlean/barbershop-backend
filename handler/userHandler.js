@@ -3,7 +3,6 @@
 const User = require('../schema/userSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { sanitize } = require('express-sanitizer');
 
 function createToken(user) {
     return jwt.sign({ id: user.id }, 'secretKey'/*, { expiresIn: 86400 }*/);
@@ -12,7 +11,9 @@ function createToken(user) {
 module.exports = {
     getUsers: async function (req, res){
         try {
-            res.status(417).json({ message: "Error, users cant be access by HTTP" });
+            //res.status(417).json({ message: "Error, users cant be access by HTTP" });
+            const users = await User.find();
+            res.status(200).json(users);
         } catch (err) {
             res.status(500).json({ message: err.message });
         };
@@ -20,7 +21,7 @@ module.exports = {
     login: async function (req, res) {
         try {
             const { nombre, password } = req.body;
-            const user = await User.findOne({ nombre: req.sanitize(nombre) });
+            const user = await User.findOne({ nombre });
             if (!user) {
                 return res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos' });
             }
@@ -39,12 +40,12 @@ module.exports = {
         try {
             const { nombre, password } = req.body;
 
-            const existingUser = await User.findOne({ nombre: req.sanitize(nombre) });
+            const existingUser = await User.findOne({ nombre });
             if (existingUser) {
                 return res.status(400).json({ message: 'Este nombre de usuario ya está en uso' });
             };
 
-            const user = new User({ nombre: req.sanitize(nombre), password: req.sanitize(password) });
+            const user = new User({ nombre, password });
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
             await user.save();

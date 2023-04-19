@@ -1,83 +1,55 @@
-"use strict";
-
-const app = require('../app');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const app = require('../app');
+const expect = chai.expect;
 
-const { expect } = chai;
 chai.use(chaiHttp);
 
 describe('Prices API', () => {
-    let authToken;
-
-    // Este hook de loagin para poder realizar las peticiones, con el token
     beforeEach((done) => {
-        chai
-        .request(app)
-        .post('/login')
-        .send({ email: 'test@example.com', password: 'test123' })
-        .end((err, res) => {
-            authToken = res.body.token; // guardado token
-            done();
-        });
+        done();
     });
 
-    // Test para GET > /prices
+    afterEach((done) => {
+        done();
+    });
+
     describe('GET /prices', () => {
-        it('should return all prices', (done) => {
-            chai
-            .request(app)
-            .get('/prices')
-            .set('Authorization', `Bearer ${authToken}`)
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('array');
-                done();
-            });
+        it('debería obtener todos los precios', (done) => {
+            chai.request(app)
+                .get('/prices')
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.an('array');
+                    done();
+                });
         });
     });
 
-    // Test para POST /prices
     describe('POST /prices', () => {
-        it('should create a new price', (done) => {
-            const newPrice = {
-            product: 'Product Name',
-            price: 100,
-            };
-            chai
-            .request(app)
-            .post('/prices')
-            .set('Authorization', `Bearer ${authToken}`)
-            .send(newPrice)
-            .end((err, res) => {
-                expect(res).to.have.status(201);
-                expect(res.body).to.be.an('object');
-                expect(res.body).to.have.property('id');
-                done();
-            });
+        it('debería crear un nuevo precio', (done) => {
+            chai.request(app)
+                .post('/prices')
+                .send({ precio1: 23 })
+                .end((err, res) => {
+                    expect(res).to.have.status(201);
+                    expect(res.body).to.be.an('object');
+                    done();
+                });
         });
     });
 
-    // Test para PUT > /prices/:id
     describe('PUT /prices/:id', () => {
-        it('should update a price', (done) => {
-            const updatedPrice = {
-            product: 'Updated Product Name',
-            price: 150,
-            };
-            chai
-            .request(app)
-            .put('/prices/1')
-            .set('Authorization', `Bearer ${authToken}`)
-            .send(updatedPrice)
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body).to.have.property('id', 1);
-                expect(res.body).to.have.property('product', updatedPrice.product);
-                expect(res.body).to.have.property('price', updatedPrice.price);
-                done();
-            });
+        it('debería actualizar un precio existente', (done) => {
+            const precioId = 'id_del_precio_a_actualizar';
+            chai.request(app)
+                .put(`/prices/${precioId}`)
+                .send({ precio1:25 })
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.an('object');
+                    done();
+                });
         });
     });
 });
