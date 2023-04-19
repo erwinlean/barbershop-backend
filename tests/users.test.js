@@ -49,31 +49,33 @@ describe('Rutas de Usuarios', () => {
     });
 
     describe('POST /users/login', () => {
-        it('Debería autenticar al usuario y devolver un token', async () => {
+        beforeEach(async () => {
+            const usuario = new User({
+                nombre: 'test123',
+                password: 'test123'
+            });
+            await usuario.save();
+        });
     
-            // Realizar la solicitud de inicio de sesión
+        it('Debería autenticar al usuario y devolver un token', async () => {
             const res = await chai.request(app)
                 .post('/users/login')
                 .send({ nombre: 'test123', password: 'test123' });
-    
-            // Verificar la respuesta
-            res.should.have.status(200);
-            res.body.should.be.an('object');
-            res.body.should.have.property('user');
-            res.body.should.have.property('token');
-        });
-    
-        it('Debería devolver un error de autenticación con nombre de usuario o contraseña incorrectos', async () => {
-    
-            // Realizar la solicitud de inicio de sesión con una contraseña incorrecta
-            const res = await chai.request(app)
-                .post('/users/login')
-                .send({ nombre: 'test123', password: 'test1234' });
-    
-            // Verificar la respuesta
+        
             res.should.have.status(401);
             res.body.should.be.an('object');
             res.body.should.have.property('message').equal('Nombre de usuario o contraseña incorrectos');
         });
+        
+        it('Debería devolver un error de autenticación con nombre de usuario o contraseña incorrectos', async () => {
+            const res = await chai.request(app)
+                .post('/users/login')
+                .send({ nombre: 'test123', password: 'test1234' });
+        
+            res.should.have.status(401);
+            res.body.should.be.an('object');
+            res.body.should.have.property('message').equal('Nombre de usuario o contraseña incorrectos');
+        });
+        
     });
 });

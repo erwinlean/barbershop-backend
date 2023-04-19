@@ -7,6 +7,7 @@ const requireToken = require ("../middleware/reqToken");
 
 router.get('/', pricesHandler.getAllPrices);
 router.post('/', requireToken, pricesHandler.createPrice);
-router.put('/:id', requireToken, pricesHandler.updatePrice);
+router.put('/', requireToken, pricesHandler.updatePrice);
+router.delete('/', requireToken, pricesHandler.deleteAllPrices);
 
 module.exports = router;

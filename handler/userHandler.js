@@ -9,6 +9,15 @@ function createToken(user) {
 };
 
 module.exports = {
+    deleteUsers: async function(req, res) {
+        try {
+            await User.deleteMany(); // Elimina todos los usuarios en la colección
+            return res.status(200).json({ message: 'Usuarios eliminados exitosamente' });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Error en el servidor' });
+        }
+    },
     getUsers: async function (req, res){
         try {
             //res.status(417).json({ message: "Error, users cant be access by HTTP" });
