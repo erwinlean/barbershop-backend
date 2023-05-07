@@ -46,9 +46,10 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/', indexRouter);
-app.use('/prices', pricesRouter);
-app.use('/users', usersRouter);
-app.use('/profits', profitsRouter);
+app.use('/api/', indexRouter);
+app.use('/api/prices', pricesRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/profits', profitsRouter);
 
 // Cors
 const corsOptions = {

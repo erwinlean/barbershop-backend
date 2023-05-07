@@ -1,7 +1,6 @@
 "use strict";
 
 const Prices = require('../schema/pricesSchema');
-const id = "64580344a1debae4761abcc1";
 
 module.exports = {
     getAllPrices: async function (req, res) {
