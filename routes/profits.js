@@ -7,5 +7,7 @@ const requireToken = require ("../middleware/reqToken");
 
 router.get('/', requireToken, profits.getAllProfits);
 router.put('/', requireToken, profits.updateProfits);
+router.delete('/', requireToken, profits.deleteAllProfits);
+router.post('/', requireToken, profits.createProfits);
 
 module.exports = router;
