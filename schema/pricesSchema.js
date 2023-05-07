@@ -26,7 +26,7 @@ const pricesSchema = new mongoose.Schema({
     nutricion: { 
         type: Number, 
         required: true,
-    },
+    }
 });
 
 module.exports = mongoose.model('Prices', pricesSchema);
