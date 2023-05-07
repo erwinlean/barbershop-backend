@@ -48,21 +48,26 @@ module.exports = {
     createUser: async function createUser (req, res) {
         try {
             const { nombre, password } = req.body;
-
+    
             const existingUser = await User.findOne({ nombre });
             if (existingUser) {
                 return res.status(400).json({ message: 'Este nombre de usuario ya está en uso' });
             };
-
-            const user = new User({ nombre, password });
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(password, salt);
-            await user.save();
-            const token = createToken(user);
-            return res.status(201).json({ user, token });
+    
+            if (!/^.{10,}$/.test(password)) {
+                return res.status(400).json({ message: `La contraseña debe tener un minimo de longitud de 10.` });
+            }else{
+                const user = new User({ nombre, password });
+                const salt = await bcrypt.genSalt(10);
+                user.password = await bcrypt.hash(password, salt);
+                await user.save();
+                const token = createToken(user);
+                return res.status(201).json({ user, token });
+            };
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Error en el servidor' });
         }
     }
+    
 };
