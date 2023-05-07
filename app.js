@@ -19,7 +19,7 @@ var profitsRouter = require("./routes/profits");
 
 var app = express();
 
-// Middleware de body-parser
+// Middleware body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

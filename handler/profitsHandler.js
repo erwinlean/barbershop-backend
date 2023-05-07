@@ -58,5 +58,24 @@ module.exports = {
         } catch (error) {
             next(error);
         }
+    },
+    deleteLastProfit: async function (req, res) {
+        try {
+            const lastProfit = await Profits.findOne().sort({$natural:-1}).limit(1);
+            if (!lastProfit) {
+                return res.status(404).json({ message: "No profits found." });
+            }
+            await lastProfit.deleteOne();
+            res.status(200).json({ message: "Last profit has been deleted." });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+    disable: async function (req, res, next){
+        try {
+            res.status(417).json({ message: "This path is disable in prod." });
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        };
     }
 };

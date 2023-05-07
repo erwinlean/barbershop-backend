@@ -1,6 +1,7 @@
 "use strict";
 
 const Prices = require('../schema/pricesSchema');
+const id = "64580344a1debae4761abcc1";
 
 module.exports = {
     getAllPrices: async function (req, res) {
@@ -29,16 +30,20 @@ module.exports = {
             res.status(500).json({ error: error.message });
         }
     },
-    updatePrice: async function (req, res) {
+    updatePrice: async function (req, res) { // Update the last price if id not specified (the cant access to the id so...)
         try {
-            const { id } = req.params; // obtener el ID del parámetro de ruta
+            let query = {};
+            if (req.params.id) {
+                query = { _id: req.params.id };
+            } else {
+                query = {}; // Obtener el último registro
+            }
             const updatedPrice = await Prices.findOneAndUpdate(
-                { _id: id }, // buscar por ID
+                query,
                 req.body,
                 { new: true }
             );
             res.status(200).json(updatedPrice);
-            console.log(updatedPrice)
         } catch (error) {
             res.status(500).json({ error: error.message });
         };
@@ -49,6 +54,13 @@ module.exports = {
             res.status(200).json({ message: 'Todos los precios han sido eliminados exitosamente.' });
         } catch (error) {
             res.status(500).json({ error: error.message });
+        };
+    },
+    disable: async function (req, res, next){
+        try {
+            res.status(417).json({ message: "This path is disable in prod." });
+        } catch (err) {
+            res.status(500).json({ message: err.message });
         };
     }
 };

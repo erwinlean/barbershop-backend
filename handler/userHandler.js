@@ -54,7 +54,9 @@ module.exports = {
                 return res.status(400).json({ message: 'Este nombre de usuario ya está en uso' });
             };
     
-            if (!/^.{10,}$/.test(password)) {
+            console.log(password);
+
+            if (password.length < 10) {
                 return res.status(400).json({ message: `La contraseña debe tener un minimo de longitud de 10.` });
             }else{
                 const user = new User({ nombre, password });
@@ -68,6 +70,12 @@ module.exports = {
             console.error(error);
             return res.status(500).json({ message: 'Error en el servidor' });
         }
+    },
+    disable: async function (req, res, next){
+        try {
+            res.status(417).json({ message: "This path is disable in prod." });
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        };
     }
-    
 };
