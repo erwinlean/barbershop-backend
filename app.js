@@ -7,8 +7,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const db = require ("./config/db");
 const cors = require ("cors");
-const corstData = require("./config/corsData.json");
 const bodyParser = require('body-parser');
+const { logGenerator } = require('./logs/logs');
+
 //const { sanitize } = require('express-sanitizer');
 
 // Path routes
@@ -16,6 +17,7 @@ var indexRouter = require('./routes/index');
 var pricesRouter = require('./routes/prices');
 var usersRouter = require('./routes/users');
 var profitsRouter = require("./routes/profits");
+var reservationRouter = require("./routes/reservations");
 
 var app = express();
 
@@ -50,28 +52,21 @@ app.use('/api/', indexRouter);
 app.use('/api/prices', pricesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/profits', profitsRouter);
+app.use("/api/reservations", reservationRouter);
 
 // Cors
 const corsOptions = {
-  origin: [`${corstData.web}`],
-  methods: ['GET', 'POST'],
+  origin: "*"
 };
 app.use(cors(corsOptions));
-app.use((req, res, next) => {
-  const allowedOrigins = [`${corstData.myIp}`];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+// Logs
+app._router.use(logGenerator);
 
 // error handler
 app.use(function(err, req, res, next) {

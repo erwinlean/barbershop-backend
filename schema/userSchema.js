@@ -10,12 +10,6 @@ const UserSchema = new mongoose.Schema({
     password: { 
         type: String, 
         required: true, 
-        //validate: {
-            //validator: function(v) {
-                //return /^(?=.*[0-9])(?=.*[a-zA-Z]{3,}).{4,}$/.test(v);
-            //},
-            //message: props => `${props.value} no es una contraseña válida. Debe contener al menos un número y tres letras`
-        //}
     }
 });
 

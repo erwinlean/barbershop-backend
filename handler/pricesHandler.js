@@ -35,8 +35,8 @@ module.exports = {
             if (req.params.id) {
                 query = { _id: req.params.id };
             } else {
-                query = {}; // Obtener el último registro
-            }
+                query = {};
+            };
             const updatedPrice = await Prices.findOneAndUpdate(
                 query,
                 req.body,
