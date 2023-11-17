@@ -1,11 +1,18 @@
 "use strict";
 
 const mongoose = require('mongoose');
-const dbConfig = require("./dbConfig.json");
+require('dotenv').config();
+const { DB_CLUSTER} = process.env;
 
-const uri = `mongodb+srv://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}/?retryWrites=true&w=majority`;
+const uri = DB_CLUSTER;
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(()=>{
+    console.log("DB connected.")
+}).catch((err)=>{
+    console.log(err);
+});
+
 const db = mongoose.connection;
 
 module.exports = db;

@@ -1,26 +1,15 @@
 "use strict";
 
 const mongoose = require('mongoose');
+const User = require("./userSchema");
 
 const profitsSchema = new mongoose.Schema({
-    ingresoDiario: {
+    entries: {
         type: Number,
         default: 0
     },
-    ingresoSemanal: {
-        type: Number,
-        default: 0
-    },
-    ingresoMensual: {
-        type: Number,
-        default: 0
-    },
-    ingresoTotal: {
-        type: Number,
-        default: 0
-    },
-    fecha: {
-        type: String,
+    date: {
+        type: String /* Should be date, but small api doesnt care */,
         default: function(){
             let date = new Date();
             let day = date.getDate();
@@ -28,10 +17,12 @@ const profitsSchema = new mongoose.Schema({
             let year = date.getFullYear();
             let finallyDate = `${day}/${month}/${year}`;
 
-            console.log(finallyDate);
-
             return finallyDate;
         }
+    },
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User
     }
 });
 
