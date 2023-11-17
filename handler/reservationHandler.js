@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use strict";
 
 const Reservation = require('../schema/reservationSchema');
@@ -75,3 +76,7 @@ module.exports = {
         };
     }
 };
+=======
+"use strict";
+
+>>>>>>> a546c28b4961cb1f5586276053fda358852d5c39
