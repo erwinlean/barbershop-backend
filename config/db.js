@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 require('dotenv').config();
-const { DB_CLUSTER} = process.env;
+const { DB_CLUSTER } = process.env;
 
 const uri = DB_CLUSTER;
 
