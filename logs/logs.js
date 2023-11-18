@@ -10,8 +10,8 @@ async function logGenerator(req, res, next) {
     const requestStart = Date.now();
     let logged = false;
 
-    res.once('close', async () => {
-        if (logged) return;
+    res.on('close', async () => {
+        if (logged) return; 
 
         const logEntry = {
             ip: req.ip || req.connection.remoteAddress,
@@ -25,18 +25,19 @@ async function logGenerator(req, res, next) {
         };
 
         try {
+            // Log entry is created when the connection closes
             await uploadLogEntryToDrive(logEntry);
             logged = true;
-            next();
+
+            return logEntry;
         } catch (err) {
             console.error('Error writing to request log or uploading to Google Drive:', err);
-            next(err);
+            return err.message
         };
     });
 
-    // erro/warning setting header after response to fix.
     next();
-}
+};
 
 
 async function uploadLogEntryToDrive(logEntry) {
