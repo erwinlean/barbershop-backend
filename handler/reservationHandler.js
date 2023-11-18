@@ -34,12 +34,12 @@ module.exports = {
             const reservations = await Reservation.find();
 
             const groupedReservations = reservations.reduce((groupedReserv, reservation) => {
-                const { name, day, hour, type} = reservation;
+                const { name, day, hour, type, email, celphone} = reservation;
                 if (!groupedReserv[name]) {
                     groupedReserv[name] = [];
                 };
 
-                groupedReserv[name].push({ day, hour, type});
+                groupedReserv[name].push({celphone, email, day, hour, type});
 
                 return groupedReserv;
             }, {});
@@ -53,10 +53,15 @@ module.exports = {
 
     deleteUserRes: async function(req, res, next) {
         try {
-            const reservation = await Reservation.findOneAndDelete("name");
+            const {email, name} = req.body
+            const reservation = await Reservation.findOneAndDelete(email);
 
-            if (!reservation) {
+            if (!reservation && !name) {
                 return res.status(404).json({ message: "Reservation not found" });
+            };
+
+            if(!reservation){
+                const reservation = await Reservation.findOneAndDelete(name);
             };
 
             res.json({ message: "Reservation deleted" });

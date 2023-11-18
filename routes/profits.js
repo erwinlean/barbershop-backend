@@ -5,11 +5,11 @@ var router = express.Router();
 const profits = require("../handler/profitsHandler");
 const requireToken = require ("../middleware/reqToken");
 
-router.get('/', requireToken, profits.getAllProfits);
+router.get('/', profits.getAllProfits);
 
-router.delete('/deleteall', requireToken, profits.deleteAllProfits);
-router.delete('/deletelast', requireToken, profits.deleteLastProfit);  
+router.delete('/deleteall', profits.deleteAllProfits);
+router.delete('/deletelast', profits.deleteLastProfit);  
 
-router.post('/create', requireToken, profits.createProfits);
+router.post('/create', profits.createProfits);
 
 module.exports = router;
