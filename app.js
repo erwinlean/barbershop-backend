@@ -42,9 +42,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // DB
 app.use((req, res, next) => {
   req.db = db;
-  console.log("DB working");
   next();
 });
+
+// Logs
+app.use(logGenerator);
 
 // Routes
 app.use('/', indexRouter);
@@ -64,9 +66,6 @@ app.use(cors(corsOptions));
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-// Logs
-app._router.use(logGenerator);
 
 // error handler
 app.use(function(err, req, res, next) {
