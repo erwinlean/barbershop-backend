@@ -12,4 +12,4 @@ router.delete('/deleteReservation', reservationHandler.deleteUserRes);
 router.delete("/deleteAll", reservationHandler.deleteEverything);
 
 
-module.exports = router;
+module.exports = router;    
