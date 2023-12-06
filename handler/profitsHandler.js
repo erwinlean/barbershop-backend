@@ -28,6 +28,8 @@ module.exports = {
         try {
             const { entries, name } = req.body;
 
+            console.log(req.body);
+
             const currentUser = User.findOne({name});
 
             if(!entries || !currentUser){

@@ -53,18 +53,15 @@ module.exports = {
 
     deleteUserRes: async function(req, res, next) {
         try {
-            const {email, name} = req.body
-            const reservation = await Reservation.findOneAndDelete(email);
+            const {celphone} = req.body;
 
-            if (!reservation && !name) {
+            const reservation = await Reservation.findOneAndDelete(celphone);
+
+            if (!celphone) {
                 return res.status(404).json({ message: "Reservation not found" });
             };
 
-            if(!reservation){
-                const reservation = await Reservation.findOneAndDelete(name);
-            };
-
-            res.json({ message: "Reservation deleted" });
+            res.json({ message: "Reservation deleted" + reservation});
         } catch (err) {
             return res.status(500).json({ message: err.message });
         };

@@ -39,6 +39,7 @@ module.exports = {
             } else {
                 query = {};
             };
+
             const updatedPrice = await Prices.findOneAndUpdate(
                 query,
                 req.body,
@@ -49,7 +50,6 @@ module.exports = {
             res.status(500).json({ error: error.message });
         };
     },
-
     deleteAllPrices:  async function (req, res) {
         try {
             await Prices.deleteMany({});
@@ -58,7 +58,6 @@ module.exports = {
             res.status(500).json({ error: error.message });
         };
     },
-    
     disable: async function (req, res, next){
         try {
             res.status(417).json({ message: "This path is disable in prod." });

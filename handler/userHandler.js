@@ -23,7 +23,7 @@ module.exports = {
         try {
             //res.status(417).json({ message: "Error, users cant be access by HTTP" });
             const users = await User.find();
-            res.status(200).json(users);
+            res.status(200).json({data: users});
         } catch (err) {
             res.status(500).json({ message: err.message });
         };
@@ -75,7 +75,6 @@ module.exports = {
             return res.status(500).json({ message: 'Error en el servidor' });
         };
     },
-    
     disable: async function (req, res, next){
         try {
             res.status(417).json({ message: "This path is disable in prod." });
