@@ -9,8 +9,9 @@ module.exports = {
             res.status(200).json(prices);
         } catch (error) {
             res.status(500).json({ error: error.message });
-        }
+        };
     },
+
     createPrice: async function (req, res) {
         const {corte, corteYBarba, barba, claritos, colorGlobal, nutricion} = req.body;
 
@@ -27,8 +28,9 @@ module.exports = {
             res.status(201).json(savedPrice);
         } catch (error) {
             res.status(500).json({ error: error.message });
-        }
+        };
     },
+
     updatePrice: async function (req, res) { // Update the last price if id not specified (the cant access to the id so...)
         try {
             let query = {};
@@ -47,6 +49,7 @@ module.exports = {
             res.status(500).json({ error: error.message });
         };
     },
+
     deleteAllPrices:  async function (req, res) {
         try {
             await Prices.deleteMany({});
@@ -55,6 +58,7 @@ module.exports = {
             res.status(500).json({ error: error.message });
         };
     },
+    
     disable: async function (req, res, next){
         try {
             res.status(417).json({ message: "This path is disable in prod." });

@@ -48,6 +48,12 @@ app.use((req, res, next) => {
 // Logs
 app.use(logGenerator);
 
+// Cors
+const corsOptions = {
+  origin: '*',
+};
+app.use(cors(corsOptions));
+
 // Routes
 app.use('/', indexRouter);
 app.use('/api/', indexRouter);
@@ -56,15 +62,9 @@ app.use('/api/users', usersRouter);
 app.use('/api/profits', profitsRouter);
 app.use("/api/reservations", reservationRouter);
 
-// Cors
-const corsOptions = {
-  origin: "*"
-};
-app.use(cors(corsOptions));
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  next(createError(404)); 
 });
 
 // error handler
